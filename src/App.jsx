@@ -95,7 +95,7 @@ function App() {
                       <Route path="/review" element={<Review />} />
                     </Routes>
                   </Content>
-                  <Footer style={{ textAlign: 'center' }}>旅行日记管理系统 ©2023</Footer>
+                  <Footer style={{ textAlign: 'center' }}>旅行日记管理系统 ©2025</Footer>
                 </Layout>
               </Layout>
             </ProtectedRoute>

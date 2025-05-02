@@ -33,7 +33,7 @@ const Review = () => {
           id: 1,
           title: '巴黎假期',
           author: '李四',
-          date: '2023-05-19',
+          date: '2024-05-19',
           content: '巴黎是一座充满浪漫和艺术气息的城市，埃菲尔铁塔、卢浮宫、凯旋门...',
           status: 'pending',
           rejectReason: ''
@@ -42,7 +42,7 @@ const Review = () => {
           id: 2,
           title: '伦敦印象',
           author: '赵六',
-          date: '2023-05-17',
+          date: '2024-05-17',
           content: '伦敦塔桥、大本钟、白金汉宫，英国的历史与现代完美融合...',
           status: 'pending',
           rejectReason: ''
@@ -51,7 +51,7 @@ const Review = () => {
           id: 3,
           title: '纽约之行',
           author: '陈七',
-          date: '2023-05-15',
+          date: '2024-05-15',
           content: '纽约是一座永不睡觉的城市，时代广场的霓虹灯，自由女神像的庄严...',
           status: 'pending',
           rejectReason: ''
@@ -60,7 +60,7 @@ const Review = () => {
           id: 4,
           title: '京都之美',
           author: '王八',
-          date: '2023-05-10',
+          date: '2024-05-10',
           content: '京都古老的寺庙、静谧的日式庭院，以及四季分明的景色...',
           status: 'approved',
           rejectReason: ''
@@ -69,7 +69,7 @@ const Review = () => {
           id: 5,
           title: '首尔购物记',
           author: '李四',
-          date: '2023-05-05',
+          date: '2024-05-05',
           content: '韩国首尔的购物天堂明洞，各种美食和化妆品让人目不暇接...',
           status: 'rejected',
           rejectReason: '内容过于商业化，缺乏真实的旅行体验描述'
