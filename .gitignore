@@ -1,0 +1,53 @@
+# 依赖
+/node_modules
+/.pnp
+.pnp.js
+
+# 测试
+/coverage
+
+# 生产构建文件
+/build
+/dist
+
+# 开发环境配置
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env
+
+# 日志
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 编辑器配置
+.idea
+.vscode
+*.swp
+*.swo
+.DS_Store
+.directory
+Thumbs.db
+*.sublime*
+
+# 杂项
+.eslintcache
+.npmrc
+.yarn-integrity
+
+# 测试文件
+/__tests__
+/test
+/tests
+
+# 缓存
+.cache/
+.parcel-cache/
+
+# 编译器输出
+*.min.js
+*.min.css
+*.bundle.js
+*.bundle.css 

@@ -1,0 +1,34 @@
+.review-container {
+  padding: 24px;
+  
+  .filter-section {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    
+    span {
+      margin-right: 8px;
+    }
+  }
+  
+  .post-content {
+    margin-top: 16px;
+    
+    p {
+      margin-bottom: 12px;
+    }
+    
+    strong {
+      font-weight: 500;
+    }
+  }
+  
+  .ant-table-cell .ant-btn-link {
+    padding: 0 8px;
+  }
+  
+  .ant-tag {
+    min-width: 60px;
+    text-align: center;
+  }
+} 
