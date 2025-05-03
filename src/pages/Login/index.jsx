@@ -2,44 +2,44 @@ import React, { useState } from 'react';
 import { Form, Input, Button, Card, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { validateLogin, setToken, setUserInfo } from '../../utils/auth';
+import { setToken, setUserInfo } from '../../utils/auth';
+import { login } from '../../services/api';
 import './index.scss';
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     setLoading(true);
     
-    // 使用模拟登录验证
-    const userInfo = validateLogin(values.username, values.password);
-    
-    if (userInfo) {
-      // 登录成功
-      const token = `mock-token-${Date.now()}`;
-      setToken(token);
-      setUserInfo(userInfo);
+    try {
+      // 调用登录API
+      const response = await login(values.username, values.password);
       
-      message.success(`欢迎回来，${userInfo.name}`);
+      // 登录成功
+      setToken(response.token);
+      setUserInfo({
+        id: response.id,
+        username: response.username,
+        nickname: response.nickname,
+        avatarUrl: response.avatarUrl,
+        role: 'admin' // 临时处理，实际应该从API响应中获取角色
+      });
+      
+      message.success(`欢迎回来，${response.nickname}`);
       navigate('/dashboard');
-    } else {
+    } catch (error) {
       // 登录失败
-      message.error('用户名或密码错误');
+      message.error(error.error || '登录失败，请检查用户名和密码');
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (
     <div className="login-container">
       <Card className="login-card" title="旅行日记管理系统">
-        <div className="login-tip">
-          <p>测试账号：</p>
-          <p>管理员 - admin / admin123</p>
-          <p>审核员 - reviewer / reviewer123</p>
-        </div>
-        
         <Form
           name="login-form"
           initialValues={{ remember: true }}

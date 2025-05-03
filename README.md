@@ -118,7 +118,9 @@ public/                  # 静态资源
 
 ## 联系方式
 
-项目维护者：[黎栋梁] - [cassielldl@gmail.com](mailto:cassielldl@gmail.com)
+项目维护者：[dongliangli] - [cassielldl@gmail.com](mailto:cassielldl@gmail.com)
+
+项目维护者：[junsun] - [a2019124741@gmail.com](mailto:a2019124741@gmail.com)
 
 ---
 

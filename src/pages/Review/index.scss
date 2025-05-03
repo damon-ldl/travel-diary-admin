@@ -1,34 +1,56 @@
 .review-container {
   padding: 24px;
-  
-  .filter-section {
-    margin-bottom: 20px;
+  background-color: #f0f2f5;
+  min-height: calc(100vh - 64px);
+
+  .review-card {
+    margin-bottom: 24px;
+  }
+
+  .review-header {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    
-    span {
-      margin-right: 8px;
-    }
+    margin-bottom: 16px;
   }
-  
-  .post-content {
-    margin-top: 16px;
-    
-    p {
-      margin-bottom: 12px;
+
+  .diary-detail {
+    .diary-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      color: #666;
     }
-    
-    strong {
-      font-weight: 500;
+
+    .reject-reason {
+      color: #f5222d;
+      margin-top: 8px;
     }
-  }
-  
-  .ant-table-cell .ant-btn-link {
-    padding: 0 8px;
-  }
-  
-  .ant-tag {
-    min-width: 60px;
-    text-align: center;
+
+    .diary-content {
+      margin-bottom: 24px;
+      white-space: pre-wrap;
+      line-height: 1.8;
+    }
+
+    .diary-images {
+      margin-bottom: 24px;
+
+      .diary-image {
+        margin-right: 8px;
+        margin-bottom: 8px;
+      }
+    }
+
+    .diary-video {
+      margin-bottom: 24px;
+    }
+
+    .diary-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 24px;
+      justify-content: flex-end;
+    }
   }
 } 

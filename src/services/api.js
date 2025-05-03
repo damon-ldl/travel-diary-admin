@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API基础URL，实际项目中应从环境变量获取
-const API_BASE_URL = 'https://api.example.com';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // 创建axios实例
 const api = axios.create({
@@ -37,49 +37,46 @@ api.interceptors.response.use(
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
-    return Promise.reject(error);
+    // 确保返回一个统一的错误对象
+    const errorResponse = error.response && error.response.data ? error.response.data : { error: '网络错误' };
+    return Promise.reject(errorResponse);
   }
 );
 
-// 登录API
+// 认证API
 export const login = (username, password) => {
   return api.post('/auth/login', { username, password });
 };
 
-// 日记相关API
-export const getPosts = (params) => {
-  return api.get('/posts', { params });
+export const getCurrentUser = () => {
+  return api.get('/auth/me');
 };
 
-export const getPostById = (id) => {
-  return api.get(`/posts/${id}`);
+// 游记管理API
+export const getDiaries = (params) => {
+  return api.get('/admin/diaries', { params });
 };
 
-export const createPost = (postData) => {
-  return api.post('/posts', postData);
+export const getDiaryById = (id) => {
+  return api.get(`/diaries/${id}`);
 };
 
-export const updatePost = (id, postData) => {
-  return api.put(`/posts/${id}`, postData);
+// 游记审核API
+export const approveDiary = (id) => {
+  return api.put(`/admin/diaries/${id}/approve`);
 };
 
-export const deletePost = (id) => {
-  return api.delete(`/posts/${id}`);
+export const rejectDiary = (id, reason) => {
+  return api.put(`/admin/diaries/${id}/reject`, { reason });
 };
 
-// 审核相关API
-export const reviewPost = (id, status, comment = '') => {
-  return api.post(`/posts/${id}/review`, { status, comment });
-};
-
-// 用户相关API
-export const getUsers = (params) => {
-  return api.get('/users', { params });
+export const deleteDiary = (id) => {
+  return api.delete(`/admin/diaries/${id}`);
 };
 
 // 统计数据API
 export const getDashboardStats = () => {
-  return api.get('/stats/dashboard');
+  return api.get('/admin/stats');
 };
 
 export default api; 
