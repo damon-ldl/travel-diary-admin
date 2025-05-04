@@ -6,6 +6,22 @@ body {
     'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
     'Noto Color Emoji';
   background-color: #f0f2f5;
+  color: #333;
+}
+
+/* 固定布局样式 */
+.ant-layout-header {
+  line-height: 50px !important;
+}
+
+.logo-container {
+  height: auto !important;
+  padding: 10px 0 !important;
+}
+
+/* 当侧边栏收起时调整内容区域 */
+.ant-layout-sider-collapsed + .ant-layout {
+  margin-left: 80px !important;
 }
 
 /* 常用flex布局 */
@@ -53,16 +69,25 @@ body {
 /* 卡片样式 */
 .card {
   background: #fff;
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 24px;
   margin-bottom: 16px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  }
 }
 
 /* 页面通用内容区 */
 .page-content {
   min-height: calc(100vh - 64px - 48px);
   padding: 24px;
+  background-color: #fff;
+  margin: 16px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* 文本样式 */
@@ -75,7 +100,7 @@ body {
 }
 
 .text-gray {
-  color: #8c8c8c;
+  color: #666;
 }
 
 /* 宽度控制 */
@@ -93,4 +118,52 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 16px;
+}
+
+/* 按钮样式增强 */
+.ant-btn {
+  &:hover, &:focus {
+    transform: translateY(-1px);
+    transition: all 0.3s;
+  }
+  
+  &-primary {
+    box-shadow: 0 2px 4px rgba(24, 144, 255, 0.2);
+    
+    &:hover, &:focus {
+      box-shadow: 0 4px 8px rgba(24, 144, 255, 0.4);
+    }
+  }
+  
+  &-danger {
+    box-shadow: 0 2px 4px rgba(245, 34, 45, 0.2);
+    
+    &:hover, &:focus {
+      box-shadow: 0 4px 8px rgba(245, 34, 45, 0.4);
+    }
+  }
+}
+
+/* 表格样式增强 */
+.ant-table {
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  
+  &-thead > tr > th {
+    background-color: #fafafa !important;
+    font-weight: 500;
+    color: #222;
+  }
+  
+  &-row:hover {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* 标签样式增强 */
+.ant-tag {
+  font-weight: 500;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 } 

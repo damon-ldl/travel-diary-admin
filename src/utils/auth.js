@@ -1,5 +1,4 @@
 // 用户信息key
-const TOKEN_KEY = 'token';
 const USER_INFO_KEY = 'user_info';
 
 // 模拟用户数据
@@ -37,21 +36,6 @@ export const validateLogin = (username, password) => {
   return null;
 };
 
-// 保存token
-export const setToken = (token) => {
-  localStorage.setItem(TOKEN_KEY, token);
-};
-
-// 获取token
-export const getToken = () => {
-  return localStorage.getItem(TOKEN_KEY);
-};
-
-// 删除token
-export const removeToken = () => {
-  localStorage.removeItem(TOKEN_KEY);
-};
-
 // 保存用户信息
 export const setUserInfo = (userInfo) => {
   localStorage.setItem(USER_INFO_KEY, JSON.stringify(userInfo));
@@ -70,12 +54,11 @@ export const removeUserInfo = () => {
 
 // 检查是否已登录
 export const isLoggedIn = () => {
-  return !!getToken();
+  return !!getUserInfo();
 };
 
 // 完整登出
 export const logout = () => {
-  removeToken();
   removeUserInfo();
 };
 

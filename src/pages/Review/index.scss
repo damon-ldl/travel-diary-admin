@@ -5,13 +5,96 @@
 
   .review-card {
     margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
   }
 
   .review-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 16px;
+  }
+
+  .review-table {
+    .ant-table-thead > tr > th {
+      background-color: #fafafa;
+      font-weight: 500;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background-color: #f5f9ff;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+
+      .action-button {
+        min-width: 72px;
+        transition: all 0.3s;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .approve-button {
+        background-color: #52c41a;
+        border-color: #52c41a;
+
+        &:hover, &:focus {
+          background-color: #73d13d;
+          border-color: #73d13d;
+        }
+      }
+    }
+  }
+
+  .custom-pagination {
+    margin-top: 16px;
+
+    .ant-pagination-item {
+      border-radius: 4px;
+      
+      &-active {
+        background-color: #1890ff;
+        border-color: #1890ff;
+        
+        a {
+          color: white;
+        }
+      }
+
+      &:hover:not(.ant-pagination-item-active) {
+        border-color: #1890ff;
+        
+        a {
+          color: #1890ff;
+        }
+      }
+    }
+
+    .ant-pagination-prev, .ant-pagination-next {
+      button {
+        border-radius: 4px;
+        
+        &:hover {
+          border-color: #1890ff;
+          color: #1890ff;
+        }
+      }
+    }
+    
+    .ant-pagination-options {
+      .ant-select:hover .ant-select-selector {
+        border-color: #1890ff;
+      }
+    }
   }
 
   .diary-detail {
@@ -20,11 +103,18 @@
       gap: 16px;
       margin-bottom: 24px;
       color: #666;
+      padding: 12px;
+      background-color: #f8f8f8;
+      border-radius: 4px;
     }
 
     .reject-reason {
       color: #f5222d;
       margin-top: 8px;
+      background-color: #fff1f0;
+      padding: 8px 12px;
+      border-radius: 4px;
+      border-left: 3px solid #ff4d4f;
     }
 
     .diary-content {
@@ -39,11 +129,22 @@
       .diary-image {
         margin-right: 8px;
         margin-bottom: 8px;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s;
+
+        &:hover {
+          transform: scale(1.02);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
       }
     }
 
     .diary-video {
       margin-bottom: 24px;
+      border-radius: 4px;
+      overflow: hidden;
     }
 
     .diary-actions {
@@ -51,6 +152,24 @@
       gap: 16px;
       margin-top: 24px;
       justify-content: flex-end;
+    }
+  }
+
+  .detail-modal, .reject-modal {
+    .ant-modal-content {
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    
+    .ant-modal-header {
+      background-color: #fafafa;
+      padding: 16px 24px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .ant-modal-footer {
+      border-top: 1px solid #f0f0f0;
+      padding: 12px 24px;
     }
   }
 } 

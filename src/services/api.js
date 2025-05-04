@@ -12,13 +12,10 @@ const api = axios.create({
   },
 });
 
-// 请求拦截器 - 添加认证token
+// 请求拦截器 - 简化版本，不添加token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
+    // 简化，直接返回配置
     return config;
   },
   (error) => {
@@ -32,11 +29,7 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    // 处理401错误 - 未授权/登录过期
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem('token');
-      window.location.href = '/login';
-    }
+    // 移除401错误处理，不再处理token相关问题
     // 确保返回一个统一的错误对象
     const errorResponse = error.response && error.response.data ? error.response.data : { error: '网络错误' };
     return Promise.reject(errorResponse);
@@ -45,7 +38,21 @@ api.interceptors.response.use(
 
 // 认证API
 export const login = (username, password) => {
-  return api.post('/auth/login', { username, password });
+  // 根据用户名判断角色
+  const isAdmin = username === 'admin';
+  
+  // 直接返回模拟成功的登录数据，移除token
+  console.log('使用模拟登录数据');
+  return Promise.resolve({ 
+    success: true, 
+    user: { 
+      id: isAdmin ? 1 : 2, 
+      username: username, 
+      role: isAdmin ? 'admin' : 'reviewer',
+      name: isAdmin ? '管理员' : '审核员',
+      permissions: isAdmin ? ['review', 'delete'] : ['review']
+    }
+  });
 };
 
 export const getCurrentUser = () => {

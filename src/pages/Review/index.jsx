@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Table, Tag, Button, Modal, Space, message, Typography, Input, Select, Popconfirm, Image } from 'antd';
 import { CheckOutlined, CloseOutlined, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getDiaries, approveDiary, rejectDiary, deleteDiary, getDiaryById } from '../../services/api';
+import { isAdmin, hasPermission, getUserInfo } from '../../utils/auth'; // 导入权限检查函数
 import './index.scss';
 
 const { Title, Paragraph } = Typography;
@@ -22,6 +23,13 @@ const Review = () => {
     pageSize: 10,
     total: 0
   });
+  
+  // 用户权限检查 - 用户至少需要登录才能查看
+  const userInfo = getUserInfo();
+  // 是否有审核权限 - 确保用户登录后才检查权限
+  const canReview = userInfo ? hasPermission('review') : false;
+  // 是否是管理员（有删除权限）- 确保用户登录后才检查权限
+  const canDelete = userInfo ? isAdmin() : false;
 
   // 加载游记列表
   const fetchDiaries = async (page = 1, status = null) => {
@@ -164,51 +172,61 @@ const Review = () => {
       title: '操作',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
+        <Space size="middle" className="action-buttons">
           <Button 
             icon={<EyeOutlined />} 
             onClick={() => viewDiary(record)}
-            type="link"
+            type="primary"
+            ghost
+            size="middle"
+            className="action-button"
           >
             查看
           </Button>
           
-          {record.status === 'pending' && (
+          {record.status === 'pending' && canReview && (
             <>
               <Button 
-                type="text" 
-                style={{ color: 'green' }} 
+                type="primary" 
+                className="approve-button"
                 icon={<CheckOutlined />} 
                 onClick={() => handleApprove(record)}
+                size="middle"
               >
                 通过
               </Button>
               
               <Button 
-                type="text" 
+                type="primary" 
                 danger 
                 icon={<CloseOutlined />} 
                 onClick={() => showRejectModal(record)}
+                size="middle"
               >
                 拒绝
               </Button>
             </>
           )}
           
-          <Popconfirm
-            title="确定要删除这条游记吗?"
-            onConfirm={() => handleDelete(record)}
-            okText="是"
-            cancelText="否"
-          >
-            <Button 
-              type="text" 
-              danger 
-              icon={<DeleteOutlined />}
+          {canDelete && (
+            <Popconfirm
+              title="确定要删除这条游记吗?"
+              onConfirm={() => handleDelete(record)}
+              okText="确定"
+              cancelText="取消"
             >
-              删除
-            </Button>
-          </Popconfirm>
+              <Button 
+                icon={<DeleteOutlined />} 
+                type="primary"
+                danger
+                ghost
+                size="middle"
+                className="action-button"
+              >
+                删除
+              </Button>
+            </Popconfirm>
+          )}
         </Space>
       ),
     },
@@ -216,41 +234,50 @@ const Review = () => {
 
   return (
     <div className="review-container">
-      <Card className="review-card">
+      <Card className="review-card" bordered={false}>
         <div className="review-header">
           <Title level={4}>游记审核管理</Title>
-          <Select 
-            value={statusFilter} 
-            onChange={setStatusFilter} 
-            style={{ width: 120 }}
-          >
-            <Option value="all">全部</Option>
-            <Option value="pending">待审核</Option>
-            <Option value="approved">已通过</Option>
-            <Option value="rejected">未通过</Option>
-          </Select>
+          <Space>
+            <Select
+              value={statusFilter}
+              onChange={setStatusFilter}
+              style={{ width: 120 }}
+              dropdownMatchSelectWidth={false}
+            >
+              <Option value="all">全部状态</Option>
+              <Option value="pending">待审核</Option>
+              <Option value="approved">已通过</Option>
+              <Option value="rejected">未通过</Option>
+            </Select>
+          </Space>
         </div>
         
-        <Table 
-          columns={columns} 
+        <Table
           dataSource={dataSource}
+          columns={columns}
           rowKey="id"
+          pagination={{
+            ...pagination,
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: (total) => `共 ${total} 条`,
+            className: "custom-pagination"
+          }}
           loading={loading}
-          pagination={pagination}
           onChange={handleTableChange}
+          className="review-table"
         />
       </Card>
 
-      {/* 游记详情模态框 */}
+      {/* 游记详情弹窗 */}
       <Modal
-        title="游记详情"
-        open={viewModalVisible}
-        onCancel={() => {
-          setViewModalVisible(false);
-          setDiaryDetail(null);
-        }}
+        title={currentDiary?.title || '游记详情'}
+        visible={viewModalVisible}
+        onCancel={() => setViewModalVisible(false)}
         footer={null}
         width={800}
+        bodyStyle={{ padding: '24px' }}
+        className="detail-modal"
       >
         {diaryDetail ? (
           <div className="diary-detail">
@@ -296,7 +323,7 @@ const Review = () => {
             )}
             
             <div className="diary-actions">
-              {diaryDetail.status === 'pending' && (
+              {diaryDetail.status === 'pending' && canReview && (
                 <>
                   <Button 
                     type="primary" 
@@ -329,24 +356,23 @@ const Review = () => {
         )}
       </Modal>
 
-      {/* 拒绝原因模态框 */}
+      {/* 拒绝原因弹窗 */}
       <Modal
         title="填写拒绝原因"
-        open={rejectModalVisible}
+        visible={rejectModalVisible}
         onOk={handleReject}
-        onCancel={() => {
-          setRejectModalVisible(false);
-          setRejectReason('');
-        }}
-        okText="确认拒绝"
+        onCancel={() => setRejectModalVisible(false)}
+        okText="确认"
         cancelText="取消"
+        bodyStyle={{ padding: '24px' }}
+        className="reject-modal"
       >
-        <p>您正在拒绝 <strong>{currentDiary?.title}</strong> 的审核，请填写拒绝原因：</p>
-        <TextArea 
-          rows={4} 
+        <p>你正在拒绝《{currentDiary?.title}》的审核，请填写拒绝原因：</p>
+        <TextArea
+          rows={4}
           value={rejectReason}
-          onChange={e => setRejectReason(e.target.value)}
-          placeholder="请详细说明拒绝原因，以便作者修改"
+          onChange={(e) => setRejectReason(e.target.value)}
+          placeholder="请输入拒绝原因"
         />
       </Modal>
     </div>

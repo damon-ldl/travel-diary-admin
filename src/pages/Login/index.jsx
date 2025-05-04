@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { Form, Input, Button, message } from 'antd';
+import { UserOutlined, LockOutlined, BookOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
-import { setToken, setUserInfo } from '../../utils/auth';
+import { setUserInfo } from '../../utils/auth';
 import { login } from '../../services/api';
 import './index.scss';
 
@@ -14,23 +14,22 @@ const Login = () => {
     setLoading(true);
     
     try {
-      // 调用登录API
+      // 使用API服务登录
       const response = await login(values.username, values.password);
       
-      // 登录成功
-      setToken(response.token);
-      setUserInfo({
-        id: response.id,
-        username: response.username,
-        nickname: response.nickname,
-        avatarUrl: response.avatarUrl,
-        role: 'admin' // 临时处理，实际应该从API响应中获取角色
-      });
-      
-      message.success(`欢迎回来，${response.nickname}`);
-      navigate('/dashboard');
+      if (response && response.success) {
+        // 登录成功，只保存用户信息
+        setUserInfo(response.user);
+        
+        message.success(`欢迎回来，${response.user.name}`);
+        navigate('/dashboard');
+      } else {
+        // 验证失败
+        message.error('登录失败，请检查用户名和密码');
+      }
     } catch (error) {
       // 登录失败
+      console.error('登录错误:', error);
       message.error(error.error || '登录失败，请检查用户名和密码');
     } finally {
       setLoading(false);
@@ -39,11 +38,18 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <Card className="login-card" title="旅行日记管理系统">
+      <div className="login-form-container">
+        <div className="login-logo">
+          <div className="logo-icon">
+            <BookOutlined style={{ fontSize: '24px', color: 'white' }} />
+          </div>
+          <h1 className="app-title">墨轩旅游日记审核管理系统</h1>
+        </div>
         <Form
           name="login-form"
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          className="login-form"
         >
           <Form.Item
             name="username"
@@ -58,12 +64,15 @@ const Login = () => {
             <Input.Password prefix={<LockOutlined />} placeholder="密码" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" loading={loading} block>
+            <Button type="primary" htmlType="submit" loading={loading} block className="login-button">
               登录
             </Button>
           </Form.Item>
+          <div className="forgot-password">
+            <a href="#">忘记密码?</a>
+          </div>
         </Form>
-      </Card>
+      </div>
     </div>
   );
 };
